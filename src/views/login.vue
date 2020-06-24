@@ -1,6 +1,13 @@
 <template>
   <div>
-    这里是登录页
+    <div class="top"></div>
+    <div class="closeBtn">
+      <span class="iconfont iconicon-test"></span>
+    </div>
+    <div class="logo">
+      <span class="iconfont iconnew"></span>
+    </div>
+    <div class="bottom"></div>
   </div>
 </template>
 
@@ -8,5 +15,31 @@
 export default {};
 </script>
 
-<style>
+<style lang="less" scoped>
+.top {
+  width: 100%;
+  height: 12.5vw;
+  background-color: #757575;
+}
+.closeBtn {
+  padding: 5.556vw;
+  span {
+    // color: #101010;
+    font-size: 6.944vw;
+  }
+}
+.logo {
+  text-align: center;
+  span {
+    color: #d81e06;
+    font-size: 35vw;
+  }
+}
+.bottom {
+  width: 100%;
+  height: 12.5vw;
+  background-color: #757575;
+  position: absolute;
+  bottom: 0;
+}
 </style>

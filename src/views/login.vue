@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- 这里是首页 -->
-    <router-link to="/login">登录页</router-link>
+    这里是登录页
   </div>
 </template>
 

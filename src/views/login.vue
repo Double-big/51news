@@ -7,12 +7,23 @@
     <div class="logo">
       <span class="iconfont iconnew"></span>
     </div>
+
+    <AuthInput type="text" placeholder="用户名/手机号"></AuthInput>
+    <AuthInput type="password" placeholder="密码"></AuthInput>
+
     <div class="bottom"></div>
   </div>
 </template>
 
 <script>
-export default {};
+import AuthInput from "@/components/AuthInput.vue";
+import AuthBtn from "@/components/AuthBtn.vue";
+export default {
+  components: {
+    AuthInput,
+    AuthBtn
+  }
+};
 </script>
 
 <style lang="less" scoped>

@@ -32,7 +32,8 @@ export default {
     },
     showAlert() {
       if (!this.isValid) {
-        this.$toast.fail(this.errMsg);
+        // alert("请输入正确内容");
+        this.$toast(this.errMsg);
       }
     }
   }

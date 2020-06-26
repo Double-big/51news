@@ -8,9 +8,22 @@
       <span class="iconfont iconnew"></span>
     </div>
 
-    <AuthInput type="text" placeholder="用户名/手机号"></AuthInput>
-    <AuthInput type="password" placeholder="密码"></AuthInput>
+    <AuthInput
+      type="text"
+      placeholder="用户名/手机号"
+      rule="^.{3,10}$"
+      errMsg="请输入正确内容"
+      @valueChange="setUsername"
+    ></AuthInput>
+    <AuthInput
+      type="password"
+      placeholder="密码"
+      rule="^.{3,10}$"
+      errMsg="请输入正确内容"
+      @valueChange="setPassword"
+    ></AuthInput>
 
+    <!-- 子组件发送被监听的事件和原生的事件不一样,即使同名也不是同一个事件,所以尽量起一个独特好辨认的名字 -->
     <AuthBtn btnText="登录" @clickBtn="login"></AuthBtn>
 
     <div class="bottom"></div>
@@ -21,9 +34,30 @@
 import AuthInput from "@/components/AuthInput.vue";
 import AuthBtn from "@/components/AuthBtn.vue";
 export default {
+  data() {
+    return {
+      username: "",
+      password: ""
+    };
+  },
   components: {
     AuthInput,
     AuthBtn
+  },
+  methods: {
+    // 这里的username用来接受子组件传过来的参数
+    setUsername(username) {
+      // console.log("父组件接受到子组件的值存到data中");
+      this.username = username;
+    },
+    setPassword(password) {
+      // 把input框中更新的值存到data中
+      // console.log("父组件接受到子组件的值存到data中");
+      this.password = password;
+    },
+    login() {
+      console.log("父组件监听子组件的事件");
+    }
   }
 };
 </script>

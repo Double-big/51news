@@ -9,6 +9,7 @@
       :type="type"
       :placeholder="placeholder"
       @input="checkValue"
+      @blur="showAlert"
     />
   </div>
 </template>
@@ -20,12 +21,19 @@ export default {
       isValid: true
     };
   },
-  props: ["type", "placeholder"],
+  props: ["type", "placeholder", "rule", "errMsg"],
   methods: {
     checkValue(event) {
       // console.log(event.target.value);
-      const regExp = /^.{3,10}$/;
+      // const regExp = /^.{3,10}$/;
+      const regExp = new RegExp(this.rule);
       this.isValid = regExp.test(event.target.value);
+      this.$emit("valueChange", event.target.value);
+    },
+    showAlert() {
+      if (!this.isValid) {
+        this.$toast.fail(this.errMsg);
+      }
     }
   }
 };

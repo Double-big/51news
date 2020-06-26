@@ -10,6 +10,7 @@ export default {
   methods: {
     // 按钮点击时往父组件发送事件
     sendClick() {
+      //   this.$emit("自定义事件名",参数(可选));
       this.$emit("clickBtn");
     }
   }

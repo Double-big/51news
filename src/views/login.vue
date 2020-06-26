@@ -11,6 +11,8 @@
     <AuthInput type="text" placeholder="用户名/手机号"></AuthInput>
     <AuthInput type="password" placeholder="密码"></AuthInput>
 
+    <AuthBtn btnText="登录" @clickBtn="login"></AuthBtn>
+
     <div class="bottom"></div>
   </div>
 </template>

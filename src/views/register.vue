@@ -87,6 +87,7 @@ export default {
             //   没有statusCode 则成功
             this.$toast.success(message);
           }
+          this.$router.replace("/");
         })
         .catch(err => {
           //   console.log("这里是错误处理");

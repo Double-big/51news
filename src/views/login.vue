@@ -75,8 +75,9 @@ export default {
           console.log(res.data);
           const { statusCode, message } = res.data;
           if (statusCode == 200 || message) {
-            this.$toast(message);
+            this.$toast.success(message);
           }
+          this.$router.replace("/");
         })
         .catch(err => {
           // console.log("这里是错误处理");

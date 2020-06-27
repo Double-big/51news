@@ -74,7 +74,9 @@ export default {
 
           console.log(res.data);
           const { statusCode, message } = res.data;
-          if (statusCode == 200 || message) {
+          if (statusCode) {
+            this.$toast.fail("系统错误");
+          } else {
             this.$toast.success(message);
           }
           this.$router.replace("/");

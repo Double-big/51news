@@ -56,7 +56,32 @@ export default {
       this.password = password;
     },
     login() {
-      console.log("父组件监听子组件的事件");
+      // console.log("父组件监听子组件的事件");
+      if (!this.username || !this.password) {
+        this.$toast("请输入完整内容");
+        return;
+      }
+      this.$axios({
+        url: "http://liangwei.tech:3000/login",
+        method: "post",
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      })
+        .then(res => {
+          // console.log("这里是成功处理");
+
+          console.log(res.data);
+          const { statusCode, message } = res.data;
+          if (statusCode == 200 || message) {
+            this.$toast(message);
+          }
+        })
+        .catch(err => {
+          // console.log("这里是错误处理");
+          this.$toast.fail("系统错误");
+        });
     }
   }
 };

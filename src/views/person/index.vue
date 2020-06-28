@@ -1,14 +1,16 @@
 <template>
-  <div class="proson">
+  <div class="proson" v-if="userData">
     <div class="hear"></div>
     <div class="top">
-      <img src="http://img1.imgtn.bdimg.com/it/u=3463550908,3838341145&fm=26&gp=0.jpg" alt />
+      <img v-if="userData.head_img" :src="$axios.defaults.baseURL + userData.head_img" alt />
+      <img v-else src="@/assets/logo.png" alt />
       <div class="middle">
         <div class="name">
-          <span class="iconfont iconxingbienan"></span>
-          火星网友
+          <span v-if="userData.gender == 1" class="iconfont iconxingbienan"></span>
+          <span v-else class="iconfont iconxingbienv"></span>
+          {{userData.nickname}}
         </div>
-        <div class="date">2019-10-10</div>
+        <div class="date">{{userData.create_date.split('T')[0]}}</div>
       </div>
       <div class="arrow iconfont iconjiantou1"></div>
     </div>
@@ -18,6 +20,7 @@
       <TabBar leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
       <TabBar leftText="我的收藏" rightText="文章/视频"></TabBar>
       <TabBar leftText="设置" rightText></TabBar>
+      <button @click="logout">退出登录</button>
     </div>
   </div>
 </template>
@@ -49,6 +52,14 @@ export default {
       }
       console.log(res.data);
     });
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_id");
+
+      this.$router.replace("/login");
+    }
   }
 };
 </script>
@@ -77,8 +88,11 @@ export default {
     .name {
       font-size: 4.444vw;
       color: #333333;
-      span {
+      .iconxingbienan {
         color: aqua;
+      }
+      .iconxingbienv {
+        color: #f63bc0;
       }
     }
     .date {

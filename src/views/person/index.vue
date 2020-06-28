@@ -17,7 +17,7 @@
       <TabBar leftText="我的关注" rightText="关注的用户"></TabBar>
       <TabBar leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
       <TabBar leftText="我的收藏" rightText="文章/视频"></TabBar>
-      <TabBar leftText="设置" rightText=""></TabBar>
+      <TabBar leftText="设置" rightText></TabBar>
     </div>
   </div>
 </template>
@@ -25,8 +25,30 @@
 <script>
 import TabBar from "@/components/TabBar.vue";
 export default {
+  data() {
+    return {
+      // userData: {}  或者  userData: null
+      userData: null
+    };
+  },
   components: {
     TabBar
+  },
+  mounted() {
+    this.$axios({
+      url: "/user/" + localStorage.getItem("user_id"),
+      methos: "get",
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    }).then(res => {
+      const { data } = res.data;
+      if (data) {
+        // this.$toast.success("获取成功");
+        this.userData = data;
+      }
+      console.log(res.data);
+    });
   }
 };
 </script>

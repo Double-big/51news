@@ -62,7 +62,7 @@ export default {
         return;
       }
       this.$axios({
-        url: "http://liangwei.tech:3000/login",
+        url: "/login",
         method: "post",
         data: {
           username: this.username,
@@ -79,7 +79,7 @@ export default {
             this.$toast.fail("系统错误");
           } else {
             this.$toast.success(message);
-            
+
             const { data } = res.data;
 
             console.log(data.token);

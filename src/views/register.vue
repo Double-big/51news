@@ -67,7 +67,7 @@ export default {
         return;
       }
       this.$axios({
-        url: "http://liangwei.tech:3000/register",
+        url: "/register",
         method: "post",
         //获取 this 里面的 用户信息
         data: {

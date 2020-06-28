@@ -14,7 +14,10 @@
     </div>
 
     <div class="barList">
-      <TabBar></TabBar>
+      <TabBar leftText="我的关注" rightText="关注的用户"></TabBar>
+      <TabBar leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
+      <TabBar leftText="我的收藏" rightText="文章/视频"></TabBar>
+      <TabBar leftText="设置" rightText=""></TabBar>
     </div>
   </div>
 </template>

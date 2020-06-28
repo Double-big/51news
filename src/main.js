@@ -38,6 +38,20 @@ axios.interceptors.response.use((res) => {
   return res;
 });
 
+//全局前置路由守卫
+router.beforeEach((to, from, next) => {
+  // console.log('拦截了响应');
+  const token = localStorage.getItem("token");
+  // console.log(to);
+  // console.log(from);
+  if (to.path == "/person" && !token) {
+    //跳转到个人中心页没有token则跳转到登录页
+    return router.replace("/login");
+  } else {
+    //跳转到个人中心页时有token则放行
+    return next();
+  }
+});
 Vue.config.productionTip = false;
 
 new Vue({

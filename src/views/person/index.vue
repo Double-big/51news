@@ -50,7 +50,7 @@ export default {
         // this.$toast.success("获取成功");
         this.userData = data;
       }
-      console.log(res.data);
+      // console.log(res.data);
     });
   },
   methods: {

@@ -80,14 +80,17 @@ export default {
           //   console.log("这里是成功处理");
           const { statusCode, message } = res.data;
           //   console.log(res.data);
-          if (statusCode) {
-            //有statusCode 则失败
-            this.$toast.fail(message);
-          } else {
-            //   没有statusCode 则成功
+          // if (statusCode) {
+          //   //有statusCode 则失败
+          //   this.$toast.fail(message);
+          // } else {
+          //   //   没有statusCode 则成功
+          //   this.$toast.success(message);
+          // }
+          if (!statusCode) {
             this.$toast.success(message);
+            this.$router.replace("/");
           }
-          this.$router.replace("/");
         })
         .catch(err => {
           //   console.log("这里是错误处理");

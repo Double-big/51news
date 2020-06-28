@@ -75,25 +75,31 @@ export default {
           // console.log(res.data);
           const { statusCode, message } = res.data;
           // 版本更新时,都是数据层面的报错,返回statusCode
-          if (statusCode) {
-            this.$toast.fail("系统错误");
-          } else {
+          // if (statusCode) {
+          //   this.$toast.fail("系统错误");
+          // } else {
+          //   this.$toast.success(message);
+
+          //   const { data } = res.data;
+
+          //   //  把data中的token和用户id保存到本地
+          //   localStorage.setItem("token", data.token);
+          //   localStorage.setItem("user_id", data.user.id);
+          // }
+          //抽离失败的逻辑, 只有成功的逻辑
+          if (!statusCode) {
             this.$toast.success(message);
 
             const { data } = res.data;
 
-            console.log(data.token);
-            console.log(data.user.id);
-
             //  把data中的token和用户id保存到本地
             localStorage.setItem("token", data.token);
             localStorage.setItem("user_id", data.user.id);
+            //编程式导航
+            this.$router.push({
+              path: "/"
+            });
           }
-
-          //编程式导航
-          this.$router.push({
-            path: "/"
-          });
         })
         .catch(err => {
           // console.log("这里是错误处理");

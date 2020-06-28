@@ -3,22 +3,40 @@ import App from "./App.vue";
 import router from "./router";
 
 //引入 vant-ui 组件库并配置
-// 全局引入
+// 全局引入,引入所有组件
 import Vant from "vant";
 Vue.use(Vant);
+//引入vant  CSS样式
 import "vant/lib/index.css";
-
 
 //引入axios库
 import axios from "axios";
 // 绑定到原型
 Vue.prototype.$axios = axios;
 
+//引入单个组件
+import { Toast } from "vant";
+Vue.use(Toast);
+
 //设置基准路径
 //远程地址
 axios.defaults.baseURL = "http://liangwei.tech:3000";
 // 本地地址
 // axios.defaults.baseURL = "http://127.0.0.1:3000";
+
+axios.interceptors.response.use((res) => {
+  // console.log("拦截了响应");
+  //必须return res ,整个请求才能进行下去
+  // console.log(res.data);
+  const { statusCode, message } = res.data;
+  const errorRegExp = /^4\d\d$/;
+
+  if (statusCode && errorRegExp.test(statusCode)) {
+    Toast.fail(message || "系统错误");
+  }
+
+  return res;
+});
 
 Vue.config.productionTip = false;
 

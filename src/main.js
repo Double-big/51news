@@ -24,6 +24,7 @@ axios.defaults.baseURL = "http://liangwei.tech:3000";
 // 本地地址
 // axios.defaults.baseURL = "http://127.0.0.1:3000";
 
+//创建响应拦截器-----抽离了登录页和注册页中请求错误的逻辑
 axios.interceptors.response.use((res) => {
   // console.log("拦截了响应");
   //必须return res ,整个请求才能进行下去
@@ -33,20 +34,31 @@ axios.interceptors.response.use((res) => {
 
   if (statusCode && errorRegExp.test(statusCode)) {
     Toast.fail(message || "系统错误");
+
+    if (message === "用户信息验证失败") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user_id");
+
+      return router.push("/login");
+    }
   }
 
   return res;
 });
 
-//全局前置路由守卫
+//创建全局前置路由守卫----用于页面权限的控制
 router.beforeEach((to, from, next) => {
   // console.log('拦截了响应');
   const token = localStorage.getItem("token");
   // console.log(to);
   // console.log(from);
-  if (to.path == "/person" && !token) {
+  const PageNeed = ["/person", "/editperson"];
+  //把所有路由跳转的路径存到一个数组中, 当索引值大于  -1  则存在, 小于 -1  则不存在
+  //设置访问权限
+  if (PageNeed.indexOf(to.path) > -1 && !token) {
     //跳转到个人中心页没有token则跳转到登录页
-    return router.replace("/login");
+    // return router.replace("/login");
+    return router.push("/login");
   } else {
     //跳转到个人中心页时有token则放行
     return next();

@@ -19,7 +19,7 @@ export default {
   display: flex;
   border-bottom: 1px solid #c4c4c4;
   line-height: 12.222vw;
-  // align-items: center;
+  align-items: center;
   margin-left: 25px;
   font-size: 3.889vw;
   .left {

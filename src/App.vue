@@ -26,7 +26,4 @@ ol {
   list-style: none;
 }
 
-.topNav + div {
-  padding-top: 16.111vw;
-}
 </style>

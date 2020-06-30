@@ -4,6 +4,7 @@
       <span class="iconfont iconjiantou"></span>
     </div>
     <span class="title">{{title}}</span>
+
   </div>
 </template>
 
@@ -26,7 +27,7 @@ export default {
     font-size: 3.889vw;
     color: #333;
     position: relative;
-    right: 15px;
+    right: 2.222vw;
   }
 }
 </style>

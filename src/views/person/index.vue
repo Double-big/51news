@@ -1,19 +1,21 @@
 <template>
   <div class="proson" v-if="userData">
     <div class="hear"></div>
-    <div class="top">
-      <img v-if="userData.head_img" :src="$axios.defaults.baseURL + userData.head_img" alt />
-      <img v-else src="@/assets/logo.png" alt />
-      <div class="middle">
-        <div class="name">
-          <span v-if="userData.gender == 1" class="iconfont iconxingbienan"></span>
-          <span v-else class="iconfont iconxingbienv"></span>
-          {{userData.nickname}}
+    <router-link to="/editperson">
+      <div class="top">
+        <img v-if="userData.head_img" :src="$axios.defaults.baseURL + userData.head_img" alt />
+        <img v-else src="@/assets/logo.png" alt />
+        <div class="middle">
+          <div class="name">
+            <span v-if="userData.gender == 1" class="iconfont iconxingbienan"></span>
+            <span v-else class="iconfont iconxingbienv"></span>
+            {{userData.nickname}}
+          </div>
+          <div class="date">{{userData.create_date.split('T')[0]}}</div>
         </div>
-        <div class="date">{{userData.create_date.split('T')[0]}}</div>
+        <div class="arrow iconfont iconjiantou1"></div>
       </div>
-      <div class="arrow iconfont iconjiantou1"></div>
-    </div>
+    </router-link>
 
     <div class="barList">
       <TabBar leftText="我的关注" rightText="关注的用户"></TabBar>
@@ -50,7 +52,7 @@ export default {
         // this.$toast.success("获取成功");
         this.userData = data;
       }
-      // console.log(res.data);
+      console.log(res.data);
     });
   },
   methods: {

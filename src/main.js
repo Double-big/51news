@@ -21,9 +21,20 @@ Vue.use(Toast);
 //设置基准路径
 //远程地址
 axios.defaults.baseURL = "http://liangwei.tech:3000";
+// axios.defaults.baseURL = "http://157.122.54.189:9083";
+
 // 本地地址
 // axios.defaults.baseURL = "http://127.0.0.1:3000";
-
+// 设置请求拦截
+axios.interceptors.request.use((config) => {
+  //如果本地有token, 请求里面没有token
+  if (localStorage.getItem("token") && !config.headers.Authorization) {
+    //则把本地的token赋值到请求中
+    config.headers.Authorization = "Bearer " + localStorage.getItem("token");
+  }
+  //必须返回
+  return config;
+});
 //创建响应拦截器-----抽离了登录页和注册页中请求错误的逻辑
 axios.interceptors.response.use((res) => {
   // console.log("拦截了响应");

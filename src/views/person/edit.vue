@@ -39,22 +39,25 @@ export default {
     TabBar
   },
   created() {
-    this.$axios({
-      url: "/user/" + localStorage.getItem("user_id"),
-      method: "get",
-      headers: {
-        // Authorization: "Bearer " + localStorage.getItem("token")
-        Authorization: localStorage.getItem("token")
-      }
-    }).then(res => {
-      const { message, data } = res.data;
-      if (message == "获取成功") {
-        this.userInfo = data;
-        // console.log(this.userInfo);
-      }
-    });
+    this.loadPage();
   },
   methods: {
+    loadPage() {
+      this.$axios({
+        url: "/user/" + localStorage.getItem("user_id"),
+        method: "get",
+        headers: {
+          // Authorization: "Bearer " + localStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
+        }
+      }).then(res => {
+        const { message, data } = res.data;
+        if (message == "获取成功") {
+          this.userInfo = data;
+          // console.log(this.userInfo);
+        }
+      });
+    },
     setNickname() {
       // this.newNickname = newNickname;
       this.$axios({
@@ -68,6 +71,9 @@ export default {
         }
       }).then(res => {
         console.log(res.data);
+        if (res.data.message == "修改成功") {
+          this.loadPage();
+        }
         // this.userInfo = this.newNickname;
       });
       // .catch(err => {

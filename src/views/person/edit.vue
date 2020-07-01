@@ -10,11 +10,19 @@
         alt
       />
       <img v-else src="@/assets/logo.png" class="avatar" alt />
+      <!-- 上传文件组件 :after-read="afterRead"-->
+      <!-- 这里以v-bind的形式传入一个函数, 来处理选中后的图片
+      即  上传  +  后续修改-->
+      <van-uploader :after-read="uploadAvatar" />
     </div>
     <!-- 编辑资料页 -->
     <TabBar @barClick="showNickname = true" leftText="昵称" :rightText="userInfo.nickname"></TabBar>
     <TabBar @barClick="showPassword = true" leftText="密码" rightText="***"></TabBar>
-    <TabBar leftText="性别" :rightText="userInfo.gender == 1 ? '男': '女'"></TabBar>
+    <TabBar
+      @barClick="showGender = true"
+      leftText="性别"
+      :rightText="userInfo.gender == 1 ? '男': '女'"
+    ></TabBar>
 
     <!-- 以下是弹窗组件 -->
     <!-- 修改昵称弹窗 -->
@@ -35,6 +43,15 @@
     >
       <van-field v-model="newPassword" placeholder="请输入新的密码" type="password" />
     </van-dialog>
+    <!-- 修改性别弹窗 -->
+    <!-- close-on-click-action  设置选完后关闭上拉菜单 -->
+    <van-action-sheet
+      v-model="showGender"
+      :actions="genders"
+      cancel-text="取消"
+      close-on-click-action
+      @select="setGender"
+    />
   </div>
 </template>
 
@@ -47,8 +64,19 @@ export default {
       userInfo: null,
       showNickname: false,
       showPassword: false,
+      showGender: false,
       newPassword: "",
-      newNickname: ""
+      newNickname: "",
+      genders: [
+        {
+          name: "男",
+          gender: 1
+        },
+        {
+          name: "女",
+          gender: 0
+        }
+      ]
     };
   },
   components: {
@@ -75,49 +103,7 @@ export default {
         }
       });
     },
-    // setNickname() {
-    //   // this.newNickname = newNickname;
-    //   this.$axios({
-    //     url: "/user_update/" + localStorage.getItem("user_id"),
-    //     method: "post",
-    //     data: {
-    //       nickname: this.newNickname
-    //     },
-    //     headers: {
-    //       Authorization: "Bearer " + localStorage.getItem("token")
-    //     }
-    //   }).then(res => {
-    //     // console.log(res.data);
-    //     if (res.data.message == "修改成功") {
-    //       this.loadPage();
-    //       this.newNickname = "";
-    //     }
-    //     // this.userInfo = this.newNickname;
-    //   });
-    //   // .catch(err => {
-    //   //   console.log("请求失败");
-    //   // });
-    // },
-    // setPassword() {
-    //   this.$axios({
-    //     url: "/user_update/" + localStorage.getItem("user_id"),
-    //     method: "post",
-    //     data: {
-    //       password: this.newPassword
-    //     },
-    //     headers: {
-    //       Authorization: "Bearer " + localStorage.getItem("token")
-    //     }
-    //   }).then(res => {
-    //     console.log(res.data);
-    //     if (res.data.message == "修改成功") {
-    //       this.loadPage();
-    //       this.newPassword = "";
-    //     }
-    //     //当后台没有这个数据时打印不出来
-    //     // console.log(this.newPassword);
-    //   });
-    // },
+
     setEdit(newData) {
       this.$axios({
         url: "/user_update/" + localStorage.getItem("user_id"),
@@ -136,6 +122,38 @@ export default {
         //当后台没有这个数据时打印不出来
         // console.log(this.newPassword);
       });
+    },
+
+    setGender(item) {
+      const obj = {
+        gender: item.gender
+      };
+      this.setEdit(obj);
+    },
+    uploadAvatar(fileObj) {
+      //会接收一个参数fileObj 文件对象
+      // 其中文件就在 fileObj.file
+      //1. 先将图片转成二进制的参数格式
+      var formData = new FormData();
+      formData.append("file", fileObj.file);
+
+      //发起 ajax 请求
+      this.$axios({
+        url: "/upload",
+        method: "post",
+        data: formData,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      }).then(res => {
+        console.log(res.data);
+        const { message, data } = res.data;
+        if (message == "文件上传成功") {
+          this.setEdit({
+            head_img: data.url
+          });
+        }
+      });
     }
   }
 };
@@ -148,6 +166,7 @@ export default {
   background-color: #757575;
 }
 .avatarWrapper {
+  position: relative;
   height: 140px;
   display: flex;
   justify-content: center;
@@ -156,6 +175,10 @@ export default {
     width: 70px;
     height: 70px;
     border-radius: 50%;
+  }
+  .van-uploader {
+    position: absolute;
+    opacity: 0;
   }
 }
 </style>

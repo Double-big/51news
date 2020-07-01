@@ -13,12 +13,27 @@
     </div>
     <!-- 编辑资料页 -->
     <TabBar @barClick="showNickname = true" leftText="昵称" :rightText="userInfo.nickname"></TabBar>
-    <TabBar leftText="密码" rightText="***"></TabBar>
+    <TabBar @barClick="showPassword = true" leftText="密码" rightText="***"></TabBar>
     <TabBar leftText="性别" :rightText="userInfo.gender == 1 ? '男': '女'"></TabBar>
 
     <!-- 以下是弹窗组件 -->
-    <van-dialog v-model="showNickname" title="修改昵称" show-cancel-button @confirm="setNickname">
+    <!-- 修改昵称弹窗 -->
+    <van-dialog
+      v-model="showNickname"
+      title="修改昵称"
+      show-cancel-button
+      @confirm="setEdit({nickname:newNickname})"
+    >
       <van-field v-model="newNickname" placeholder="请输入新的昵称" />
+    </van-dialog>
+    <!-- 修改密码弹窗 -->
+    <van-dialog
+      v-model="showPassword"
+      title="修改昵称"
+      show-cancel-button
+      @confirm="setEdit({password:newPassword})"
+    >
+      <van-field v-model="newPassword" placeholder="请输入新的密码" type="password" />
     </van-dialog>
   </div>
 </template>
@@ -31,6 +46,8 @@ export default {
     return {
       userInfo: null,
       showNickname: false,
+      showPassword: false,
+      newPassword: "",
       newNickname: ""
     };
   },
@@ -58,14 +75,55 @@ export default {
         }
       });
     },
-    setNickname() {
-      // this.newNickname = newNickname;
+    // setNickname() {
+    //   // this.newNickname = newNickname;
+    //   this.$axios({
+    //     url: "/user_update/" + localStorage.getItem("user_id"),
+    //     method: "post",
+    //     data: {
+    //       nickname: this.newNickname
+    //     },
+    //     headers: {
+    //       Authorization: "Bearer " + localStorage.getItem("token")
+    //     }
+    //   }).then(res => {
+    //     // console.log(res.data);
+    //     if (res.data.message == "修改成功") {
+    //       this.loadPage();
+    //       this.newNickname = "";
+    //     }
+    //     // this.userInfo = this.newNickname;
+    //   });
+    //   // .catch(err => {
+    //   //   console.log("请求失败");
+    //   // });
+    // },
+    // setPassword() {
+    //   this.$axios({
+    //     url: "/user_update/" + localStorage.getItem("user_id"),
+    //     method: "post",
+    //     data: {
+    //       password: this.newPassword
+    //     },
+    //     headers: {
+    //       Authorization: "Bearer " + localStorage.getItem("token")
+    //     }
+    //   }).then(res => {
+    //     console.log(res.data);
+    //     if (res.data.message == "修改成功") {
+    //       this.loadPage();
+    //       this.newPassword = "";
+    //     }
+    //     //当后台没有这个数据时打印不出来
+    //     // console.log(this.newPassword);
+    //   });
+    // },
+    setEdit(newData) {
       this.$axios({
         url: "/user_update/" + localStorage.getItem("user_id"),
         method: "post",
-        data: {
-          nickname: this.newNickname
-        },
+        //把data部分抽离出来作为一个变量, 从组件传入所需要的变量值, 实现封装的功能
+        data: newData,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
@@ -73,12 +131,11 @@ export default {
         console.log(res.data);
         if (res.data.message == "修改成功") {
           this.loadPage();
+          this.newPassword = "";
         }
-        // this.userInfo = this.newNickname;
+        //当后台没有这个数据时打印不出来
+        // console.log(this.newPassword);
       });
-      // .catch(err => {
-      //   console.log("请求失败");
-      // });
     }
   }
 };

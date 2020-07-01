@@ -1,5 +1,5 @@
 <template>
-  <div class="tabbar">
+  <div class="tabbar" @click="handleClick">
     <div class="left">{{leftText}}</div>
     <div class="right">
       {{rightText}}
@@ -10,7 +10,13 @@
 
 <script>
 export default {
-  props: ["leftText", "rightText"]
+  props: ["leftText", "rightText"],
+  methods: {
+    handleClick() {
+      console.log("子组件被点击");
+      this.$emit('barClick')
+    }
+  }
 };
 </script>
 

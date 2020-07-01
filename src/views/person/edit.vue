@@ -12,9 +12,14 @@
       <img v-else src="@/assets/logo.png" class="avatar" alt />
     </div>
     <!-- 编辑资料页 -->
-    <TabBar leftText="昵称" :rightText="userInfo.nickname"></TabBar>
+    <TabBar @barClick="showNickname = true" leftText="昵称" :rightText="userInfo.nickname"></TabBar>
     <TabBar leftText="密码" rightText="***"></TabBar>
     <TabBar leftText="性别" :rightText="userInfo.gender == 1 ? '男': '女'"></TabBar>
+
+    <!-- 以下是弹窗组件 -->
+    <van-dialog v-model="showNickname" title="修改昵称" show-cancel-button @confirm="setNickname">
+      <van-field v-model="newNickname" placeholder="请输入新的昵称" />
+    </van-dialog>
   </div>
 </template>
 
@@ -24,7 +29,9 @@ import TabBar from "@/components/TabBar.vue";
 export default {
   data() {
     return {
-      userInfo: null
+      userInfo: null,
+      showNickname: false,
+      newNickname: ""
     };
   },
   components: {
@@ -46,6 +53,27 @@ export default {
         // console.log(this.userInfo);
       }
     });
+  },
+  methods: {
+    setNickname() {
+      // this.newNickname = newNickname;
+      this.$axios({
+        url: "/user_update/" + localStorage.getItem("user_id"),
+        method: "post",
+        data: {
+          nickname: this.newNickname
+        },
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      }).then(res => {
+        console.log(res.data);
+        // this.userInfo = this.newNickname;
+      });
+      // .catch(err => {
+      //   console.log("请求失败");
+      // });
+    }
   }
 };
 </script>

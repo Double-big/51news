@@ -11,17 +11,17 @@
             <span v-else class="iconfont iconxingbienv"></span>
             {{userData.nickname}}
           </div>
-          <div class="date">{{userData.create_date.split('T')[0]}}</div>
+          <div class="date">{{createDate}}</div>
         </div>
         <div class="arrow iconfont iconjiantou1"></div>
       </div>
     </router-link>
 
     <div class="barList">
-      <TabBar leftText="我的关注" rightText="关注的用户"></TabBar>
-      <TabBar leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
-      <TabBar leftText="我的收藏" rightText="文章/视频"></TabBar>
-      <TabBar leftText="设置" rightText></TabBar>
+      <TabBar @barClick="beClick('关注')" leftText="我的关注" rightText="关注的用户"></TabBar>
+      <TabBar @barClick="beClick('跟帖')" leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
+      <TabBar @barClick="beClick('收藏')" leftText="我的收藏" rightText="文章/视频"></TabBar>
+      <TabBar @barClick="beClick" leftText="设置" rightText></TabBar>
       <button @click="logout">退出登录</button>
     </div>
   </div>
@@ -35,6 +35,15 @@ export default {
       // userData: {}  或者  userData: null
       userData: null
     };
+  },
+  computed: {
+    createDate() {
+      if (this.userData.create_date) {
+        return this.userData.create_date.split("T")[0];
+      } else {
+        return "2020 - 07 - 01";
+      }
+    }
   },
   components: {
     TabBar
@@ -61,6 +70,9 @@ export default {
       localStorage.removeItem("user_id");
 
       this.$router.replace("/login");
+    },
+    beClick() {
+      console.log("接受到子组件点击");
     }
   }
 };

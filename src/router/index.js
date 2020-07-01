@@ -17,6 +17,7 @@ const routes = [
     component: () => import("@/views/About.vue"),
     //第二种写法, 不需要在上面 import 对应文件.在这里直接引入了
   },
+  
   {
     path: "/login",
     name: "Login",
@@ -27,6 +28,7 @@ const routes = [
     name: "Register",
     component: () => import("@/views/register.vue"),
   },
+
   {
     path: "/person",
     name: "Person",
@@ -41,6 +43,11 @@ const routes = [
     path: "/test",
     name: "Test",
     component: () => import("@/views/Test.vue"),
+  },
+  {
+    path: "/follows",
+    name: "Follows",
+    component: () => import("@/views/person/follow.vue"),
   },
 ];
 

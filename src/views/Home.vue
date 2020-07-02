@@ -2,7 +2,9 @@
   <div>
     <HomeHeader />
     <van-tabs v-model="active">
-      <van-tab v-for="item in categoriesList" :key="item.id" :title="item.name">{{item.name}}</van-tab>
+      <van-tab v-for="item in categoriesList" :key="item.id" :title="item.name">
+        <div v-for="post in postList" :key="post.id">{{post.title}}</div>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
@@ -16,8 +18,8 @@ export default {
   data() {
     return {
       active: 0,
-      categoriesList: []
-      // categoryId: []
+      categoriesList: [],
+      postList: []
     };
   },
   created() {
@@ -29,16 +31,21 @@ export default {
       this.getPost();
     });
   },
+  watch: {
+    active() {
+      this.getPost();
+    }
+  },
   methods: {
     getPost() {
       //栏目列表
-      this.categoriesList;
-      //当前激活栏目的索引
-      this.active;
-      // 可以拿到当前激活栏目
-      this.categoriesList[this.active];
-      // 获取id
-      this.categoriesList[this.active].id;
+      // this.categoriesList;
+      // //当前激活栏目的索引
+      // this.active;
+      // // 可以拿到当前激活栏目
+      // this.categoriesList[this.active];
+      // // 获取id
+      // this.categoriesList[this.active].id;
       //当前激活分类, 是在分类列表中拿出当前激活的索引
       const currentCategory = this.categoriesList[this.active];
       //从中获取 id
@@ -51,6 +58,7 @@ export default {
       }).then(res => {
         // this.categoryId = this.categoriesList[this.active].id;
         console.log(res.data);
+        this.postList = res.data.data;
       });
     }
   }

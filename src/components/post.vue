@@ -1,30 +1,33 @@
 <template>
   <div v-if="postData">
     <!-- 一张图片 -->
-    <div class="singleImg" v-if="postData.type == 1 && postData.cover.length < 3">
+    <div
+      class="singleImg"
+      v-if="postData.type == 1 && postData.cover.length >= 1 && postData.cover.length < 3"
+    >
       <div class="left">
         <div class="title">{{ postData.title}}</div>
         <div class="info">{{postData.user.nickname}} {{postData.comment_length}}跟帖</div>
       </div>
-      <img :src="postData.cover[0].url" alt class="right" />
+      <img :src="postData.cover[0].url | fixImgUrl" alt class="right" />
     </div>
 
     <!-- 三张图片 -->
     <div class="multiImg" v-if="postData.type == 1 && postData.cover.length >= 3">
       <div class="multi_title">{{ postData.title}}</div>
       <div class="multi_img">
-        <img :src="postData.cover[0].url" alt />
-        <img :src="postData.cover[1].url" alt />
-        <img :src="postData.cover[2].url" alt />
+        <img :src="postData.cover[0].url | fixImgUrl" alt />
+        <img :src="postData.cover[1].url | fixImgUrl" alt />
+        <img :src="postData.cover[2].url | fixImgUrl" alt />
       </div>
       <div class="multi_info">{{postData.user.nickname}} {{postData.comment_length}}跟帖</div>
     </div>
 
     <!-- 视频 -->
-    <div class="video" v-if="postData.type == 2">
+    <div class="video" v-if="postData.type == 2 && postData.cover.length >= 1">
       <div class="video_title">{{ postData.title}}</div>
       <div class="coverWrapp">
-        <img :src="postData.cover[0].url" alt />
+        <img :src="postData.cover[0].url | fixImgUrl" alt />
         <div class="iconfont iconshipin"></div>
       </div>
       <div class="video_info">{{postData.user.nickname}} {{postData.comment_length}}跟帖</div>

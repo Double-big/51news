@@ -44,11 +44,23 @@ const routes = [
     name: "Test",
     component: () => import("@/views/Test.vue"),
   },
+
   {
     path: "/follows",
     name: "Follows",
     component: () => import("@/views/person/follow.vue"),
   },
+  {
+    path:'/collect',
+    name:'Collect',
+    component:()=>import('@/views/person/collect.vue')
+  },
+  {
+    // 动态路由匹配:
+    path:'/postdetails/:id',
+    name:'postDetails',
+    component:()=>import('@/views/postDetails.vue')
+  }
 ];
 
 const router = new VueRouter({

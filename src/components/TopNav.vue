@@ -1,7 +1,7 @@
 <template>
   <div class="topNav">
     <div class="arrow">
-      <span class="iconfont iconjiantou"></span>
+      <span class="iconfont iconjiantou" @click="$router.back()"></span>
     </div>
     <span class="title">{{title}}</span>
 

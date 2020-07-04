@@ -18,10 +18,11 @@ Vue.prototype.$axios = axios;
 import { Toast } from "vant";
 Vue.use(Toast);
 
+
 //设置基准路径
 //远程地址
-axios.defaults.baseURL = "http://liangwei.tech:3000";
-// axios.defaults.baseURL = "http://157.122.54.189:9083";
+// axios.defaults.baseURL = "http://liangwei.tech:3000";
+axios.defaults.baseURL = "http://157.122.54.189:9083";
 
 // 本地地址
 // axios.defaults.baseURL = "http://127.0.0.1:3000";
@@ -73,6 +74,16 @@ router.beforeEach((to, from, next) => {
   } else {
     //跳转到个人中心页时有token则放行
     return next();
+  }
+});
+
+//创建一个修复图片地址的全局过滤器
+Vue.filter("fixImgUrl", function(url) {
+  const fullUrlReg = /^http/;
+  if (fullUrlReg.test(url)) {
+    return url;
+  } else {
+    return axios.defaults.baseURL + url;
   }
 });
 Vue.config.productionTip = false;

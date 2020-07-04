@@ -3,7 +3,9 @@
     <HomeHeader />
     <van-tabs v-model="active">
       <van-tab v-for="item in categoriesList" :key="item.id" :title="item.name">
-        <div v-for="post in postList" :key="post.id">{{post.title}}</div>
+        <!-- <div v-for="post in postList" :key="post.id">{{post.title}}</div> -->
+        <!-- 组件替代div -->
+        <Post :postData="post" v-for="post in postList" :key="post.id" />
       </van-tab>
     </van-tabs>
   </div>
@@ -11,9 +13,11 @@
 
 <script>
 import HomeHeader from "@/components/HomeHeader";
+import Post from "@/components/post";
 export default {
   components: {
-    HomeHeader
+    HomeHeader,
+    Post
   },
   data() {
     return {
@@ -23,13 +27,15 @@ export default {
     };
   },
   created() {
-    this.$axios({
-      url: "/category"
-    }).then(res => {
-      this.categoriesList = res.data.data;
-      //获取当前文章, 发送ajax请求. 封装 getPost()
-      this.getPost();
-    });
+    this.getCategorise();
+  },
+  computed: {
+    categoryId() {
+      //当前激活分类, 是在分类列表中拿出当前激活的索引
+      const currentCategory = this.categoriesList[this.active];
+      //从中获取 id
+      return currentCategory.id;
+    }
   },
   watch: {
     active() {
@@ -37,6 +43,15 @@ export default {
     }
   },
   methods: {
+    getCategorise() {
+      this.$axios({
+        url: "/category"
+      }).then(res => {
+        this.categoriesList = res.data.data;
+        //获取当前文章, 发送ajax请求. 封装 getPost()
+        this.getPost();
+      });
+    },
     getPost() {
       //栏目列表
       // this.categoriesList;
@@ -46,14 +61,11 @@ export default {
       // this.categoriesList[this.active];
       // // 获取id
       // this.categoriesList[this.active].id;
-      //当前激活分类, 是在分类列表中拿出当前激活的索引
-      const currentCategory = this.categoriesList[this.active];
-      //从中获取 id
-      const categoryId = currentCategory.id;
+
       this.$axios({
         url: "/post",
         params: {
-          category: categoryId
+          category: this.categoryId
         }
       }).then(res => {
         // this.categoryId = this.categoriesList[this.active].id;

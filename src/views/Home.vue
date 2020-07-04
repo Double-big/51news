@@ -1,7 +1,7 @@
 <template>
   <div>
     <HomeHeader />
-    <van-tabs v-model="active">
+    <van-tabs v-model="active" sticky swipeable>
       <van-tab v-for="category in categoriesList" :key="category.id" :title="category.name">
         <!-- <div v-for="post in postList" :key="post.id">{{post.title}}</div> -->
         <!-- 组件替代div -->

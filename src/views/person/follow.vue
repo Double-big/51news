@@ -3,13 +3,14 @@
     <div class="top"></div>
     <TopNav title="我的关注" />
     <div class="followsList">
-      <div class="item" v-for="item in followsList " :key="item.id">
+      <div class="item" v-for="(item,index) in followsList " :key="item.id">
         <img class="avatar" src="@/assets/logo.png" alt />
         <div class="middle">
           <div class="name">火星新闻播报</div>
           <div class="date">2020-07-01</div>
         </div>
-        <div class="unFollow" @click="unFollow(item.id)">取消关注</div>
+        <div v-if="item.isFollow" class="unFollow" @click="unFollow(item.id,index)">取消关注</div>
+        <div v-else class="Follow" @click="Follow(item.id,index)">关注</div>
       </div>
     </div>
   </div>
@@ -34,15 +35,30 @@ export default {
       this.$axios({
         url: "/user_follows"
       }).then(res => {
-        console.log(res.data);
-        this.followsList = res.data.data;
+        console.log(res.data.data);
+        // this.followsList = res.data.data;
+        const newData = res.data.data.map(user => {
+          return { ...user, isFollow: true };
+        });
+        console.log(newData);
+        this.followsList = newData;
       });
     },
-    unFollow(id) {
+    unFollow(id, index) {
       this.$axios({
         url: "/user_unfollow/" + id
       }).then(res => {
-        this.loadPage();
+        // this.loadPage();
+        this.followsList[index].isFollow = false;
+      });
+    },
+    Follow(id, index) {
+      this.$axios({
+        url: "/user_follows/" + id,
+        method: "get"
+      }).then(res => {
+        console.log(res.data);
+        this.followsList[index].isFollow = true;
       });
     }
   }
@@ -83,6 +99,15 @@ export default {
     height: 30px;
     border-radius: 50px;
     background-color: #e1e1e1;
+    font-size: 12px;
+    text-align: center;
+    line-height: 30px;
+  }
+  .Follow {
+    width: 50px;
+    height: 30px;
+    border-radius: 50px;
+    background-color: red;
     font-size: 12px;
     text-align: center;
     line-height: 30px;

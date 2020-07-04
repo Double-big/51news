@@ -39,7 +39,11 @@ export default {
   },
   watch: {
     active() {
-      this.getPost();
+      const currentCategory = this.categoriesList[this.active];
+      if (currentCategory.postList == 0) {
+        //没有数据才发送请求
+        this.getPost();
+      }
     }
   },
   methods: {
@@ -64,6 +68,10 @@ export default {
       });
     },
     getPost() {
+      //当前激活分类, 是在分类列表中拿出当前激活的索引
+      // const currentCategory = this.categoriesList[this.active];
+      // //从中获取 id
+      // return currentCategory.id;
       //栏目列表
       // this.categoriesList;
       // //当前激活栏目的索引
@@ -85,7 +93,6 @@ export default {
         const currentCategory = this.categoriesList[this.active];
         currentCategory.postList = res.data.data;
         console.log(currentCategory.postList);
-        
       });
     }
   }

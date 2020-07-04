@@ -6,7 +6,13 @@
         <!-- <div v-for="post in postList" :key="post.id">{{post.title}}</div> -->
         <!-- 组件替代div -->
         <!-- v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" -->
-        <van-list v-model="category.loading" :finished="category.finished" @load="loadMorePost"  :immediate-check="false">
+        <van-list
+          v-model="category.loading"
+          :finished="category.finished"
+          @load="loadMorePost"
+          :immediate-check="false"
+          finished-text="亲, 没有货了哟! "
+        >
           <Post :postData="post" v-for="post in category.postList" :key="post.id" />
 
           <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
@@ -65,20 +71,24 @@ export default {
           return {
             ...category,
             postList: [],
+            //当前页码
             pageIndex: 1,
-            pageSize: 8,
+            // 每页长度
+            pageSize: 5,
+            // 是否正在加载
             loading: false,
+            //是否全部加载完毕
             finished: false
           };
         });
         this.categoriesList = newData;
-        console.log(this.categoriesList);
+        // console.log(this.categoriesList);
 
         this.getPost();
       });
     },
     loadMorePost() {
-      console.log("加载下一页");
+      // console.log("加载下一页");
 
       // 读取更多文章就是pageIndex + 1
       const currentCategory = this.categoriesList[this.active];
@@ -109,13 +119,21 @@ export default {
         }
       }).then(res => {
         // this.categoryId = this.categoriesList[this.active].id;
-        // console.log(res.data);
+        console.log(res.data);
         // this.postList = res.data.data;
 
         // currentCategory.postList = res.data.data;
         //把之前的数组和新的数组拼接起来
-        currentCategory.postList = [...currentCategory.postList,...res.data.data]
-        console.log(currentCategory.postList);
+
+        currentCategory.postList = [
+          ...currentCategory.postList,
+          ...res.data.data
+        ];
+        currentCategory.loading = false;
+        if (res.data.data.length < currentCategory.pageSize) {
+          currentCategory.finished = true;
+        }
+        // console.log(currentCategory.postList);
       });
     }
   }

@@ -5,7 +5,12 @@
       <van-tab v-for="category in categoriesList" :key="category.id" :title="category.name">
         <!-- <div v-for="post in postList" :key="post.id">{{post.title}}</div> -->
         <!-- 组件替代div -->
-        <Post :postData="post" v-for="post in category.postList" :key="post.id" />
+        <!-- v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" -->
+        <van-list v-model="category.loading" :finished="category.finished" @load="loadMorePost"  :immediate-check="false">
+          <Post :postData="post" v-for="post in category.postList" :key="post.id" />
+
+          <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
+        </van-list>
       </van-tab>
     </van-tabs>
   </div>
@@ -47,6 +52,7 @@ export default {
     }
   },
   methods: {
+    //当前栏目
     getCategorise() {
       this.$axios({
         url: "/category"
@@ -58,7 +64,11 @@ export default {
         const newData = res.data.data.map(category => {
           return {
             ...category,
-            postList: []
+            postList: [],
+            pageIndex: 1,
+            pageSize: 8,
+            loading: false,
+            finished: false
           };
         });
         this.categoriesList = newData;
@@ -66,6 +76,14 @@ export default {
 
         this.getPost();
       });
+    },
+    loadMorePost() {
+      console.log("加载下一页");
+
+      // 读取更多文章就是pageIndex + 1
+      const currentCategory = this.categoriesList[this.active];
+      currentCategory.pageIndex += 1;
+      this.getPost();
     },
     getPost() {
       //当前激活分类, 是在分类列表中拿出当前激活的索引
@@ -81,17 +99,22 @@ export default {
       // // 获取id
       // this.categoriesList[this.active].id;
 
+      const currentCategory = this.categoriesList[this.active];
       this.$axios({
         url: "/post",
         params: {
-          category: this.categoryId
+          category: this.categoryId,
+          pageSize: currentCategory.pageSize,
+          pageIndex: currentCategory.pageIndex
         }
       }).then(res => {
         // this.categoryId = this.categoriesList[this.active].id;
         // console.log(res.data);
         // this.postList = res.data.data;
-        const currentCategory = this.categoriesList[this.active];
-        currentCategory.postList = res.data.data;
+
+        // currentCategory.postList = res.data.data;
+        //把之前的数组和新的数组拼接起来
+        currentCategory.postList = [...currentCategory.postList,...res.data.data]
         console.log(currentCategory.postList);
       });
     }

@@ -1,6 +1,7 @@
 <template>
   <div class="proson" v-if="userData">
     <div class="hear"></div>
+    <TopNav title="个人中心" />
     <router-link to="/editperson">
       <div class="top">
         <img v-if="userData.head_img" :src="$axios.defaults.baseURL + userData.head_img" alt />
@@ -20,7 +21,7 @@
     <div class="barList">
       <TabBar @barClick="$router.push('/follows')" leftText="我的关注" rightText="关注的用户"></TabBar>
       <TabBar @barClick="beClick('跟帖')" leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
-      <TabBar @barClick="beClick('收藏')" leftText="我的收藏" rightText="文章/视频"></TabBar>
+      <TabBar @barClick="$router.push('/collect')" leftText="我的收藏" rightText="文章/视频"></TabBar>
       <TabBar @barClick="beClick" leftText="设置" rightText></TabBar>
       <button @click="logout">退出登录</button>
     </div>
@@ -28,7 +29,8 @@
 </template>
 
 <script>
-import TabBar from "@/components/TabBar.vue";
+import TabBar from "@/components/TabBar";
+import TopNav from "@/components/TopNav";
 export default {
   data() {
     return {
@@ -46,7 +48,8 @@ export default {
     }
   },
   components: {
-    TabBar
+    TabBar,
+    TopNav
   },
   mounted() {
     this.$axios({

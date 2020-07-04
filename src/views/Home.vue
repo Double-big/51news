@@ -2,10 +2,10 @@
   <div>
     <HomeHeader />
     <van-tabs v-model="active">
-      <van-tab v-for="item in categoriesList" :key="item.id" :title="item.name">
+      <van-tab v-for="category in categoriesList" :key="category.id" :title="category.name">
         <!-- <div v-for="post in postList" :key="post.id">{{post.title}}</div> -->
         <!-- 组件替代div -->
-        <Post :postData="post" v-for="post in postList" :key="post.id" />
+        <Post :postData="post" v-for="post in category.postList" :key="post.id" />
       </van-tab>
     </van-tabs>
   </div>
@@ -47,8 +47,19 @@ export default {
       this.$axios({
         url: "/category"
       }).then(res => {
-        this.categoriesList = res.data.data;
+        console.log(res.data);
+
+        // this.categoriesList = res.data.data;
         //获取当前文章, 发送ajax请求. 封装 getPost()
+        const newData = res.data.data.map(category => {
+          return {
+            ...category,
+            postList: []
+          };
+        });
+        this.categoriesList = newData;
+        console.log(this.categoriesList);
+
         this.getPost();
       });
     },
@@ -69,8 +80,12 @@ export default {
         }
       }).then(res => {
         // this.categoryId = this.categoriesList[this.active].id;
-        console.log(res.data);
-        this.postList = res.data.data;
+        // console.log(res.data);
+        // this.postList = res.data.data;
+        const currentCategory = this.categoriesList[this.active];
+        currentCategory.postList = res.data.data;
+        console.log(currentCategory.postList);
+        
       });
     }
   }

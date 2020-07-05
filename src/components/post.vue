@@ -1,6 +1,6 @@
 <template>
-  <!-- <div v-if="postData" @click="$router.push('/postdetails?id=' + postData.id)"> -->
-  <div v-if="postData" @click="$router.push('/postdetails/' + postData.id)">
+  <div v-if="postData" @click="$router.push('/postdetails?id=' + postData.id)">
+  <!-- <div v-if="postData" @click="$router.push('/postdetails/' + postData.id)"> -->
     <!-- 一张图片 -->
     <div
       class="singleImg"

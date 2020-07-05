@@ -57,7 +57,8 @@ const routes = [
   },
   {
     // 动态路由匹配:
-    path:'/postdetails/:id',
+    // path:'/postdetails/:id',
+    path:'/postdetails',
     name:'postDetails',
     component:()=>import('@/views/postDetails.vue')
   }

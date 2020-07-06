@@ -135,11 +135,11 @@ export default {
         if (this.postDetails.has_like) {
           this.postDetails.has_like = false;
           // 点赞时点赞数加一
-          this.postDetails.like_length += 1;
+          this.postDetails.like_length -= 1;
         } else {
           this.postDetails.has_like = true;
           // 取消点赞的同时点赞数减一
-          this.postDetails.like_length -= 1;
+          this.postDetails.like_length += 1;
         }
       });
     }
@@ -205,8 +205,9 @@ export default {
       border-radius: 20px;
       text-align: center;
       line-height: 30px;
+      color: red;
       &.unlike {
-        color: red;
+        color: #000;
       }
       .icondianzan {
         font-size: 20px;
@@ -301,8 +302,9 @@ export default {
       border-radius: 20px;
       text-align: center;
       line-height: 30px;
+      color: red;
       &.unlike {
-        color: red;
+        color: #000;
       }
       .icondianzan {
         font-size: 20px;

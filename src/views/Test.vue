@@ -1,25 +1,27 @@
 <template>
   <div>
-    <button @click="show = true">弹出弹窗</button>
-    <van-dialog v-model="show" title="标题" show-cancel-button @confirm="submit">
-      <van-field v-model="value" placeholder="请输入用户名" />
-    </van-dialog>
+    <Index :commentData="item" v-for="(item, index) in commentList" :key="index" />
   </div>
 </template>
 
 <script>
+import Index from "@/components/comment/index";
 export default {
+  components: {
+    Index
+  },
   data() {
     return {
-      show: false,
-      value: ""
+      commentList: []
     };
   },
-  methods: {
-    submit() {
-      console.log("触发事件了");
-      console.log("当前的值", this.value);
-    }
+  created() {
+    this.$axios({
+      url: "/post_comment/4"
+    }).then(res => {
+      console.log(res.data);
+      this.commentList = res.data.data;
+    });
   }
 };
 </script>

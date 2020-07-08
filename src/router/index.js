@@ -17,7 +17,7 @@ const routes = [
     component: () => import("@/views/About.vue"),
     //第二种写法, 不需要在上面 import 对应文件.在这里直接引入了
   },
-  
+
   {
     path: "/login",
     name: "Login",
@@ -51,17 +51,24 @@ const routes = [
     component: () => import("@/views/person/follow.vue"),
   },
   {
-    path:'/collect',
-    name:'Collect',
-    component:()=>import('@/views/person/collect.vue')
+    path: "/collect",
+    name: "Collect",
+    component: () => import("@/views/person/collect.vue"),
   },
   {
     // 动态路由匹配:
     // path:'/postdetails/:id',
-    path:'/postdetails',
-    name:'postDetails',
-    component:()=>import('@/views/postDetails.vue')
-  }
+    path: "/postdetails",
+    name: "postDetails",
+    component: () => import("@/views/postDetails.vue"),
+  },
+  {
+    // 动态路由匹配:
+    // path:'/postdetails/:id',
+    path: "/morecomment",
+    name: "moreComment",
+    component: () => import("@/views/moreComment.vue"),
+  },
 ];
 
 const router = new VueRouter({

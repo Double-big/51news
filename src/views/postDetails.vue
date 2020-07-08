@@ -78,15 +78,28 @@
         </div>
       </div>
     </div>
+
+    <!-- 评论列表 -->
+    <Comment :commentData="item" v-for="item in commentList" :key="item.id" />
+
+    <!-- 更多跟帖 -->
+    <div class="moreComment">
+      <div class="btn" @click="$router.push('/morecomment?id=' + postDetails.id)">更多跟帖</div>
+    </div>
   </div>
 </template>
 
 <script>
+import Comment from "@/components/comment/index";
 export default {
+  components: {
+    Comment
+  },
   data() {
     return {
       postDetails: {},
-      likeNum: 112
+      likeNum: 112,
+      commentList: []
     };
   },
   created() {
@@ -96,6 +109,15 @@ export default {
     }).then(res => {
       console.log(res.data);
       this.postDetails = res.data.data;
+    });
+    // 获取评论列表
+    this.$axios({
+      url: "/post_comment/" + this.$route.query.id
+    }).then(res => {
+      // 保留3条评论
+      const commentList = res.data.data;
+      // commentList.length = 3;
+      this.commentList = commentList;
     });
   },
 
@@ -323,6 +345,21 @@ export default {
         color: #00c800;
       }
     }
+  }
+}
+.moreComment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .btn {
+    width: 36.111vw;
+    height: 8.333vw;
+    border: 0.278vw solid #000;
+    border-radius: 5.556vw;
+    text-align: center;
+    line-height: 8.333vw;
+    margin: 8.333vw 0;
+    font-size: 3.611vw;
   }
 }
 </style>

@@ -10,7 +10,13 @@
         <div class="answer">回复</div>
       </div>
 
-      <Parent class="parentComment" :parentData="commentData.parent" v-if="commentData.parent" />
+      <Parent
+        :parentDepth="parentDepth"
+        class="parentComment"
+        :parentData="commentData.parent"
+        v-if="commentData.parent"
+      />
+      {{parentDepth}}
       <div class="content">{{commentData.content}}</div>
     </div>
   </div>
@@ -22,6 +28,17 @@ export default {
   props: ["commentData"],
   components: {
     Parent
+  },
+  computed: {
+    parentDepth() {
+      let Depth = 0;
+      let current = this.commentData;
+      while (current.parent) {
+        Depth += 1;
+        current = current.parent;
+      }
+      return Depth;
+    }
   }
 };
 </script>

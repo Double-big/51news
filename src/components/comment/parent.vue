@@ -1,9 +1,9 @@
 <template>
   <div class="parentComment">
-    <Parent :parentData="parentData.parent" v-if="parentData.parent" />
+    <Parent :parentDepth="parentDepth-1" :parentData="parentData.parent" v-if="parentData.parent" />
     <div class="user">
       <div class="info">
-        <div class="name">{{parentData.user.nickname}}2小时前</div>
+        <div class="name">{{parentDepth}} {{parentData.user.nickname}}2小时前</div>
         <div class="answer">回复</div>
       </div>
       <div class="content">{{parentData.content}}</div>
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "Parent",
-  props: ["parentData"]
+  props: ["parentData", "parentDepth"]
 };
 </script>
 

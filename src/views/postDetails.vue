@@ -84,7 +84,7 @@
 
     <!-- 更多跟帖 -->
     <div class="moreComment">
-      <div class="btn" @click="$router.push('/morecomment?id=' + postDetails.id)">更多跟帖</div>
+      <div class="btn" @click="$router.push('/morecomment/' + postDetails.id)">更多跟帖</div>
     </div>
   </div>
 </template>
@@ -105,19 +105,23 @@ export default {
   created() {
     this.$axios({
       //使url上面带有id
-      url: "/post/" + this.$route.query.id
+      url: "/post/" + this.$route.params.id
     }).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       this.postDetails = res.data.data;
     });
     // 获取评论列表
     this.$axios({
-      url: "/post_comment/" + this.$route.query.id
+      url: "/post_comment/" + this.$route.params.id
     }).then(res => {
       // 保留3条评论
       const commentList = res.data.data;
-      // commentList.length = 3;
+      // 加入评论多于三条, 只显示三条
       this.commentList = commentList;
+      if (this.commentList.length > 3) {
+        commentList.length = 3;
+      }
+      // console.log("commentList", commentList);
     });
   },
 

@@ -57,15 +57,14 @@ const routes = [
   },
   {
     // 动态路由匹配:
-    // path:'/postdetails/:id',
-    path: "/postdetails",
+    path: "/postdetails/:id",
+    // path: "/postdetails",
     name: "postDetails",
     component: () => import("@/views/postDetails.vue"),
   },
   {
     // 动态路由匹配:
-    // path:'/postdetails/:id',
-    path: "/morecomment",
+    path: "/morecomment/:id",
     name: "moreComment",
     component: () => import("@/views/moreComment.vue"),
   },

@@ -2,12 +2,18 @@
   <div>
     <div class="mainComment">
       <div class="info">
-        <img src="@/assets/logo.png" class="avatar" alt />
+        <img
+          v-if="commentData"
+          :src="$axios.defaults.baseURL + commentData.user.head_img"
+          class="avatar"
+          alt
+        />
+        <img v-else src="@/assets/logo.png" class="avatar" alt />
         <div class="user">
           <div class="name" v-if="commentData">{{commentData.user.nickname}}</div>
           <div class="date">2小时</div>
         </div>
-        <div class="answer">回复</div>
+        <div class="answer" @click="reply">回复</div>
       </div>
 
       <Parent
@@ -16,7 +22,7 @@
         :parentData="commentData.parent"
         v-if="commentData.parent"
       />
-      {{parentDepth}}
+      <!-- {{parentDepth}}  被评论的数量 -->
       <div class="content">{{commentData.content}}</div>
     </div>
   </div>
@@ -38,6 +44,11 @@ export default {
         current = current.parent;
       }
       return Depth;
+    }
+  },
+  methods: {
+    reply() {
+      this.$emit("reply", this.commentData.id);
     }
   }
 };

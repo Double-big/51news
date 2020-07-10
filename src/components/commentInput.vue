@@ -2,13 +2,13 @@
   <div class="commentWrapper">
     <!-- 已激活 -->
     <div class="enable" v-if="isShow">
-      <textarea v-model="conent" placeholder="回复:" ref="textarea" @blur="hide" rows="4"></textarea>
+      <textarea v-model="content" placeholder="回复:" ref="textarea" @blur="hide" rows="4"></textarea>
       <div class="btnSend" @click="send">发送</div>
     </div>
 
     <!-- 未激活 -->
     <div class="disable" v-if="!isShow">
-      <input type="text" @focus="showTextarea" :value="conent" placeholder="写跟帖" />
+      <input type="text" @focus="showTextarea" :value="content" placeholder="写跟帖" />
       <div class="comment">
         <span class="iconfont iconpinglun-"></span>
         <span class="num">1020</span>
@@ -21,12 +21,14 @@
 
 <script>
 export default {
+  props: ["parentId"],
   data() {
     return {
       isShow: false,
-      conent: ""
+      content: ""
     };
   },
+
   methods: {
     showTextarea() {
       this.isShow = true;
@@ -43,16 +45,38 @@ export default {
     },
     send() {
       console.log(this.$route.params.id);
-      console.log(this.conent);
+      console.log(this.content);
+      if (this.content == "") {
+        this.$toast.fail("请输入内容");
+        return;
+      }
+      let data = {
+        content: this.content
+      };
+      if (this.parentId) {
+        data.parent_id = this.parentId;
+        this.$emit("reloadComment");
+      }
+
       this.$axios({
         url: "/post_comment/" + this.$route.params.id,
         method: "post",
-        data: {
-          conent: this.conent
-        }
-      }).then(res => {
-        console.log(res.data);
-      });
+        // data: data
+        // 简写
+        data
+      })
+        .then(res => {
+          console.log(res.data);
+
+          if (res.data.message == "评论发布成功" && this.content != "") {
+            // 子组件发送事件到父组件, 父组件以监听事件的形式接受;
+            this.$emit("reloadComment");
+            this.content = "";
+          }
+        })
+        .catch(err => {
+          this.$toast.fail("系统失败");
+        });
     }
   }
 };

@@ -80,26 +80,32 @@
     </div>
 
     <!-- 评论列表 -->
-    <Comment :commentData="item" v-for="item in commentList" :key="item.id" />
+    <Comment @reply="callReply" :commentData="item" v-for="item in commentList" :key="item.id" />
 
     <!-- 更多跟帖 -->
     <div class="moreComment">
       <div class="btn" @click="$router.push('/morecomment/' + postDetails.id)">更多跟帖</div>
     </div>
+
+    <!-- 评论输入框 -->
+    <commentInput ref="commentInput" :parentId="commentId" @reloadComment="loadComment" />
   </div>
 </template>
 
 <script>
 import Comment from "@/components/comment/index";
+import commentInput from "@/components/commentInput";
 export default {
   components: {
-    Comment
+    Comment,
+    commentInput
   },
   data() {
     return {
       postDetails: {},
       likeNum: 112,
-      commentList: []
+      commentList: [],
+      commentId: ""
     };
   },
   created() {
@@ -110,19 +116,7 @@ export default {
       // console.log(res.data);
       this.postDetails = res.data.data;
     });
-    // 获取评论列表
-    this.$axios({
-      url: "/post_comment/" + this.$route.params.id
-    }).then(res => {
-      // 保留3条评论
-      const commentList = res.data.data;
-      // 加入评论多于三条, 只显示三条
-      this.commentList = commentList;
-      if (this.commentList.length > 3) {
-        commentList.length = 3;
-      }
-      // console.log("commentList", commentList);
-    });
+    this.loadComment();
   },
 
   methods: {
@@ -168,6 +162,27 @@ export default {
           this.postDetails.like_length += 1;
         }
       });
+    },
+    loadComment() {
+      // 获取评论列表
+      this.$axios({
+        url: "/post_comment/" + this.$route.params.id
+      }).then(res => {
+        // 保留3条评论
+        const commentList = res.data.data;
+        // 加入评论多于三条, 只显示三条
+        this.commentList = commentList;
+        if (this.commentList.length > 3) {
+          commentList.length = 3;
+        }
+        console.log(res.data);
+        // console.log("commentList", commentList);
+      });
+    },
+    callReply(commentId) {
+      this.commentId = commentId;
+      console.log("获取index组件中的id");
+      this.$refs.commentInput.showTextarea();
     }
   }
 };

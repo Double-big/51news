@@ -1,10 +1,15 @@
 <template>
   <div class="parentComment">
-    <Parent :parentDepth="parentDepth-1" :parentData="parentData.parent" v-if="parentData.parent" />
     <div class="user">
+      <Parent
+        :parentDepth="parentDepth-1"
+        :parentData="parentData.parent"
+        v-if="parentData.parent"
+        @parentCallReply="diGuiReply"
+      />
       <div class="info">
         <div class="name">{{parentDepth}} {{parentData.user.nickname}}2小时前</div>
-        <div class="answer">回复</div>
+        <div class="answer" @click="parentCallReply">回复</div>
       </div>
       <div class="content">{{parentData.content}}</div>
     </div>
@@ -14,7 +19,18 @@
 <script>
 export default {
   name: "Parent",
-  props: ["parentData", "parentDepth"]
+  props: ["parentData", "parentDepth"],
+  methods: {
+    parentCallReply() {
+      this.$emit("parentCallReply", {
+        id: this.parentData.id,
+        nickname: this.parentData.user.nickname
+      });
+    },
+    diGuiReply(parentInfo) {
+      this.$emit("parentCallReply", parentInfo);
+    }
+  }
 };
 </script>
 

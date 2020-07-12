@@ -2,13 +2,19 @@
   <div class="commentWrapper">
     <!-- 已激活 -->
     <div class="enable" v-if="isShow">
-      <textarea v-model="content" placeholder="回复:" ref="textarea" @blur="hide" rows="4"></textarea>
+      <textarea
+        v-model="content"
+        :placeholder="placeholderText"
+        ref="textarea"
+        @blur="hide"
+        rows="4"
+      ></textarea>
       <div class="btnSend" @click="send">发送</div>
     </div>
 
     <!-- 未激活 -->
     <div class="disable" v-if="!isShow">
-      <input type="text" @focus="showTextarea" :value="content" placeholder="写跟帖" />
+      <input type="text" @focus="showTextarea" :value="content" :placeholder="placeholderText" />
       <div class="comment">
         <span class="iconfont iconpinglun-"></span>
         <span class="num">1020</span>
@@ -21,12 +27,21 @@
 
 <script>
 export default {
-  props: ["parentId"],
+  props: ["parentInfo"],
   data() {
     return {
       isShow: false,
       content: ""
     };
+  },
+  computed: {
+    placeholderText() {
+      if (this.parentInfo.nickname) {
+        return "回复: @" + this.parentInfo.nickname;
+      } else {
+        return "写评论";
+      }
+    }
   },
 
   methods: {
@@ -39,9 +54,10 @@ export default {
     },
     hide() {
       // console.log(this.isShow);
+      this.parentInfo.nickname = "";
       setTimeout(() => {
         this.isShow = false;
-      }, 100);
+      }, 50);
     },
     send() {
       console.log(this.$route.params.id);
@@ -53,8 +69,8 @@ export default {
       let data = {
         content: this.content
       };
-      if (this.parentId) {
-        data.parent_id = this.parentId;
+      if (this.parentInfo.id) {
+        data.parent_id = this.parentInfo.id;
         this.$emit("reloadComment");
       }
 

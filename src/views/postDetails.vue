@@ -88,7 +88,7 @@
     </div>
 
     <!-- 评论输入框 -->
-    <commentInput ref="commentInput" :parentId="commentId" @reloadComment="loadComment" />
+    <commentInput ref="commentInput" :parentInfo="commentInfo" @reloadComment="loadComment" />
   </div>
 </template>
 
@@ -105,7 +105,7 @@ export default {
       postDetails: {},
       likeNum: 112,
       commentList: [],
-      commentId: ""
+      commentInfo: {}
     };
   },
   created() {
@@ -179,8 +179,8 @@ export default {
         // console.log("commentList", commentList);
       });
     },
-    callReply(commentId) {
-      this.commentId = commentId;
+    callReply(commentInfo) {
+      this.commentInfo = commentInfo;
       console.log("获取index组件中的id");
       this.$refs.commentInput.showTextarea();
     }

@@ -21,6 +21,7 @@
         class="parentComment"
         :parentData="commentData.parent"
         v-if="commentData.parent"
+        @parentCallReply="parentCallReply"
       />
       <!-- {{parentDepth}}  被评论的数量 -->
       <div class="content">{{commentData.content}}</div>
@@ -48,7 +49,13 @@ export default {
   },
   methods: {
     reply() {
-      this.$emit("reply", this.commentData.id);
+      this.$emit("reply", {
+        id: this.commentData.id,
+        nickname: this.commentData.user.nickname
+      });
+    },
+    parentCallReply(parentInfo) {
+      this.$emit("reply", parentInfo);
     }
   }
 };

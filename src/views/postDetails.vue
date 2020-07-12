@@ -127,7 +127,7 @@ export default {
         this.$axios({
           url: "/user_unfollow/" + this.postDetails.user.id
         }).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.message == "取消关注成功") {
             this.postDetails.has_follow = false;
           }
@@ -140,7 +140,7 @@ export default {
         this.$axios({
           url: "/user_follows/" + this.postDetails.user.id
         }).then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.message == "关注成功") {
             this.postDetails.has_follow = true;
           }
@@ -151,7 +151,7 @@ export default {
       this.$axios({
         url: "/post_like/" + this.postDetails.id
       }).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (this.postDetails.has_like) {
           this.postDetails.has_like = false;
           // 点赞时点赞数加一
@@ -175,13 +175,13 @@ export default {
         if (this.commentList.length > 3) {
           commentList.length = 3;
         }
-        console.log(res.data);
+        // console.log(res.data);
         // console.log("commentList", commentList);
       });
     },
     callReply(commentInfo) {
       this.commentInfo = commentInfo;
-      console.log("获取index组件中的id");
+      // console.log("获取index组件中的id");
       this.$refs.commentInput.showTextarea();
     }
   }

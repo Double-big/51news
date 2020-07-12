@@ -68,6 +68,11 @@ const routes = [
     name: "moreComment",
     component: () => import("@/views/moreComment.vue"),
   },
+  {
+    path: "/search",
+    name: "Search",
+    component: () => import("@/views/search.vue"),
+  },
 ];
 
 const router = new VueRouter({

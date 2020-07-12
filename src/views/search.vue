@@ -14,29 +14,25 @@
     <div class="suggestions" v-if="results.length == 0">
       <h2 class="title">历史记录</h2>
       <div class="history list">
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
+        <div
+          @click="sendSuggestions(item)"
+          class="item"
+          v-for="(item, index) in history"
+          :key="index"
+        >{{item}}</div>
       </div>
+
       <h2 class="title">热门搜索</h2>
       <div class="hot list">
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
-        <div class="item">美女</div>
-        <div class="item">关晓彤</div>
-        <div class="item">英语</div>
+        <div
+          @click="sendSuggestions(item)"
+          class="item"
+          v-for="(item, index) in hot"
+          :key="index"
+        >{{item}}</div>
       </div>
     </div>
+
     <!-- 文章列表渲染 -->
     <div class="results">
       <Post :postData="item" v-for="item in results" :key="item.id" />
@@ -53,7 +49,9 @@ export default {
   data() {
     return {
       keyword: "",
-      results: []
+      results: [],
+      history: ["美女", "关晓彤", "英语"],
+      hot: ["美女", "关晓彤", "英语"]
     };
   },
   methods: {
@@ -70,6 +68,10 @@ export default {
         console.log("搜索结果", res.data);
         this.results = res.data.data;
       });
+    },
+    sendSuggestions(item) {
+      this.keyword = item;
+      this.search();
     }
   }
 };

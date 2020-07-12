@@ -60,8 +60,8 @@ export default {
       }, 50);
     },
     send() {
-      console.log(this.$route.params.id);
-      console.log(this.content);
+      // console.log(this.$route.params.id);
+      // console.log(this.content);
       if (this.content == "") {
         this.$toast.fail("请输入内容");
         return;
@@ -82,7 +82,7 @@ export default {
         data
       })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
 
           if (res.data.message == "评论发布成功" && this.content != "") {
             // 子组件发送事件到父组件, 父组件以监听事件的形式接受;

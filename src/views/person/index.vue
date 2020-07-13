@@ -73,9 +73,6 @@ export default {
       localStorage.removeItem("user_id");
 
       this.$router.replace("/login");
-    },
-    beClick() {
-      console.log("接受到子组件点击");
     }
   }
 };

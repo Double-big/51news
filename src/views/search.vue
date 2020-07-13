@@ -3,7 +3,7 @@
     <!-- 顶部 -->
     <div class="top"></div>
     <div class="searchWrapper">
-      <span class="iconfont iconjiantou"></span>
+      <span class="iconfont iconjiantou" @click="goBack"></span>
       <div class="search">
         <span class="iconfont iconsearch"></span>
         <input v-model="keyword" class="iconfont iconsearch" type="text" placeholder="通灵兽消失术" />
@@ -50,9 +50,16 @@ export default {
     return {
       keyword: "",
       results: [],
-      history: ["美女", "关晓彤", "英语"],
+      history: [],
       hot: ["美女", "关晓彤", "英语"]
     };
+  },
+  watch: {
+    keyword(newVal) {
+      if (!newVal) {
+        this.results = [];
+      }
+    }
   },
   methods: {
     search() {
@@ -66,12 +73,26 @@ export default {
         }
       }).then(res => {
         console.log("搜索结果", res.data);
+        // indexOf方法判断数组有没有重复, 没有就等于 -1
+        if (this.history.indexOf(this.keyword) == -1) {
+          // 如果没有重复, 则添加到历史数据的数组中
+          this.history.push(this.keyword);
+        }
         this.results = res.data.data;
       });
     },
     sendSuggestions(item) {
       this.keyword = item;
       this.search();
+    },
+    goBack() {
+      if (this.results.length == 0) {
+        // 没有搜索关键字时后退下一页
+        this.$router.back();
+      }else {
+        // 有关键字时触动watch监听keyword, 清空关键字, 继续停留搜索页
+        this.keyword = ''
+      }
     }
   }
 };

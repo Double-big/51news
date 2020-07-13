@@ -73,6 +73,12 @@ const routes = [
     name: "Search",
     component: () => import("@/views/search.vue"),
   },
+  {
+    path: "/mycomment",
+    name: "myComment",
+    component: () => import("@/views/person/myComment.vue"),
+  },
+  
 ];
 
 const router = new VueRouter({

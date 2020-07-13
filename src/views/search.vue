@@ -54,11 +54,22 @@ export default {
       hot: ["美女", "关晓彤", "英语"]
     };
   },
+  mounted() {
+    const historyStorage = localStorage.getItem("history");
+    if (historyStorage) {
+      // 用于将一个 JSON 字符串转换为 JavaScript 对象。
+      this.history = JSON.parse(historyStorage);
+    }
+  },
   watch: {
     keyword(newVal) {
       if (!newVal) {
         this.results = [];
       }
+    },
+    history() {
+      // 用于将 JavaScript 值转换为 JSON 字符串。
+      localStorage.setItem("history", JSON.stringify(this.history));
     }
   },
   methods: {
@@ -89,9 +100,9 @@ export default {
       if (this.results.length == 0) {
         // 没有搜索关键字时后退下一页
         this.$router.back();
-      }else {
+      } else {
         // 有关键字时触动watch监听keyword, 清空关键字, 继续停留搜索页
-        this.keyword = ''
+        this.keyword = "";
       }
     }
   }

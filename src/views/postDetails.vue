@@ -370,6 +370,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 50px;
   .btn {
     width: 36.111vw;
     height: 8.333vw;

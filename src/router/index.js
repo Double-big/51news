@@ -78,7 +78,11 @@ const routes = [
     name: "myComment",
     component: () => import("@/views/person/myComment.vue"),
   },
-  
+  {
+    path: "/managecategory",
+    name: "manageCategory",
+    component: () => import("@/views/manageCategory.vue"),
+  },
 ];
 
 const router = new VueRouter({

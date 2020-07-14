@@ -22,6 +22,7 @@
       <TabBar @barClick="$router.push('/follows')" leftText="我的关注" rightText="关注的用户"></TabBar>
       <TabBar @barClick="$router.push('/mycomment')" leftText="我的跟帖" rightText="跟帖/回复"></TabBar>
       <TabBar @barClick="$router.push('/collect')" leftText="我的收藏" rightText="文章/视频"></TabBar>
+      <TabBar @barClick="$router.push('/managecategory')" leftText="栏目管理" rightText></TabBar>
       <TabBar @barClick="beClick" leftText="设置" rightText></TabBar>
       <button @click="logout">退出登录</button>
     </div>
@@ -73,6 +74,9 @@ export default {
       localStorage.removeItem("user_id");
 
       this.$router.replace("/login");
+    },
+    beClick() {
+      console.log("接受到子组件点击");
     }
   }
 };

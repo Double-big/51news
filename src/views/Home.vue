@@ -60,13 +60,15 @@ export default {
   methods: {
     //当前栏目
     getCategorise() {
-      this.$axios({
-        url: "/category"
-      }).then(res => {
-        console.log(res.data);
-
-        // this.categoriesList = res.data.data;
-        //获取当前文章, 发送ajax请求. 封装 getPost()
+      // 本地有栏目数据,直接拿来用
+      const enable = localStorage.getItem("enable");
+      if (enable) {
+        const res = {
+          data: {
+            data: JSON.parse(enable)
+          }
+        };
+        console.log(res.data.data);
         const newData = res.data.data.map(category => {
           return {
             ...category,
@@ -85,7 +87,35 @@ export default {
         // console.log(this.categoriesList);
 
         this.getPost();
-      });
+      } else {
+        //本地没有栏目数据则发送请求
+        this.$axios({
+          url: "/category"
+        }).then(res => {
+          console.log(res.data);
+
+          // this.categoriesList = res.data.data;
+          //获取当前文章, 发送ajax请求. 封装 getPost()
+          const newData = res.data.data.map(category => {
+            return {
+              ...category,
+              postList: [],
+              //当前页码
+              pageIndex: 1,
+              // 每页长度
+              pageSize: 5,
+              // 是否正在加载
+              loading: false,
+              //是否全部加载完毕
+              finished: false
+            };
+          });
+          this.categoriesList = newData;
+          // console.log(this.categoriesList);
+
+          this.getPost();
+        });
+      }
     },
     loadMorePost() {
       // console.log("加载下一页");

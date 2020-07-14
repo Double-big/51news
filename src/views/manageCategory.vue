@@ -4,11 +4,21 @@
     <div class="mainWrapper">
       <h2>点击删除以下频道</h2>
       <div class="enable list">
-        <div class="item" v-for="item in enableList" :key="item.id">{{item.name}}</div>
+        <div
+          class="item"
+          v-for="(item, index) in enableList"
+          @click="disableCategory(index)"
+          :key="item.id"
+        >{{item.name}}</div>
       </div>
       <h2>点击添加以下频道</h2>
       <div class="disable list">
-        <div class="item" v-for="item in disableList" :key="item.id">{{item.name}}</div>
+        <div
+          class="item"
+          @click="enableCategory(index)"
+          v-for="(item,index) in disableList"
+          :key="item.id"
+        >{{item.name}}</div>
       </div>
     </div>
   </div>
@@ -26,14 +36,43 @@ export default {
   components: {
     TopNav
   },
+  watch: {
+    enableList() {
+      localStorage.setItem("enable", JSON.stringify(this.enableList));
+    },
+    disableList() {
+      localStorage.setItem("disable", JSON.stringify(this.disableList));
+    }
+  },
   created() {
-    this.$axios({
-      url: "/category"
-    }).then(res => {
-      console.log(res.data);
-      this.enableList = res.data.data;
-      this.disableList = res.data.data;
-    });
+    const enable = localStorage.getItem("enable");
+    const disable = localStorage.getItem("disable");
+
+    if (enable) {
+      this.enableList = JSON.parse(enable);
+      this.disableList = JSON.parse(disable);
+    } else {
+      this.$axios({
+        url: "/category"
+      }).then(res => {
+        console.log(res.data);
+        this.enableList = res.data.data;
+        // this.disableList = res.data.data;
+      });
+    }
+  },
+  methods: {
+    disableCategory(index) {
+      if (this.enableList.length == 1) {
+        return;
+      }
+      this.disableList.push(this.enableList[index]),
+        this.enableList.splice(index, 1);
+    },
+    enableCategory(index) {
+      this.enableList.push(this.disableList[index]),
+        this.disableList.splice(index, 1);
+    }
   }
 };
 </script>

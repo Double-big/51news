@@ -33,16 +33,6 @@ import TopNav from "@/components/TopNav";
 export default {
   components: {
     TopNav
-  },
-  created() {
-    this.$axios({
-      url:''
-    }).then(res=>{
-      
-    })
-  },
-  methods: {
-
   }
 };
 </script>

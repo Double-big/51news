@@ -92,13 +92,14 @@ export default {
         this.$axios({
           url: "/category"
         }).then(res => {
-          console.log(res.data);
+          console.log(res.data.data);
 
           // this.categoriesList = res.data.data;
           //获取当前文章, 发送ajax请求. 封装 getPost()
           const newData = res.data.data.map(category => {
+            console.log(category);
             return {
-              ...category,
+              ...category, // 扩展运算符把category对象中的所有属性拿出来放到当前这个对象中
               postList: [],
               //当前页码
               pageIndex: 1,
@@ -111,7 +112,7 @@ export default {
             };
           });
           this.categoriesList = newData;
-          // console.log(this.categoriesList);
+          console.log(this.categoriesList);
 
           this.getPost();
         });
